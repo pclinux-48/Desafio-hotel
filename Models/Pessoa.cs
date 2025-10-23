@@ -17,5 +17,8 @@ public class Pessoa
 
     public string Nome { get; set; }
     public string Sobrenome { get; set; }
-    public string NomeCompleto => $"{Nome} {Sobrenome}".ToUpper();
+    public string NomeCompleto =>
+        string.IsNullOrWhiteSpace(Sobrenome)
+            ? (Nome ?? string.Empty).ToUpper()
+            : $"{Nome} {Sobrenome}".ToUpper();
 }

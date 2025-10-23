@@ -1,21 +1,77 @@
-# DIO - Trilha .NET - Explorando a linguagem C#
-www.dio.me
+# Sistema de Hospedagem (Desafio DIO .NET)
 
-## Desafio de projeto
-Para este desafio, você precisará usar seus conhecimentos adquiridos no módulo de explorando a linguagem C#, da trilha .NET da DIO.
+Este projeto implementa um sistema de hospedagem simples em C#, seguindo o desafio da trilha .NET (Explorando a linguagem C#) da DIO.
 
-## Contexto
-Você foi contratado para construir um sistema de hospedagem, que será usado para realizar uma reserva em um hotel. Você precisará usar a classe Pessoa, que representa o hóspede, a classe Suíte, e a classe Reserva, que fará um relacionamento entre ambos.
+## Sobre o Projeto
+- Modelos centrais: `Pessoa`, `Suite` e `Reserva`.
+- Regras de negócio implementadas conforme o enunciado.
+- Aplicação de console com menu interativo para cadastro e cálculo.
+- Cultura `pt-BR` aplicada para formatação de moeda e números.
 
-O seu programa deverá cálcular corretamente os valores dos métodos da classe Reserva, que precisará trazer a quantidade de hóspedes e o valor da diária, concedendo um desconto de 10% para caso a reserva seja para um período maior que 10 dias.
+![Diagrama de classe hotel](diagrama_classe_hotel.png)
 
-## Regras e validações
-1. Não deve ser possível realizar uma reserva de uma suíte com capacidade menor do que a quantidade de hóspedes. Exemplo: Se é uma suíte capaz de hospedar 2 pessoas, então ao passar 3 hóspedes deverá retornar uma exception.
-2. O método ObterQuantidadeHospedes da classe Reserva deverá retornar a quantidade total de hóspedes, enquanto que o método CalcularValorDiaria deverá retornar o valor da diária (Dias reservados x valor da diária).
-3. Caso seja feita uma reserva igual ou maior que 10 dias, deverá ser concedido um desconto de 10% no valor da diária.
+## Funcionalidades
+- Cadastrar suíte (tipo, capacidade e valor da diária).
+- Adicionar hóspedes (nome e sobrenome opcional).
+- Definir dias da reserva.
+- Exibir resumo e calcular o valor total da estadia, com desconto quando aplicável.
+- Limpar dados para iniciar novo cadastro.
 
+## Regras e Validações Implementadas
+- Capacidade da suíte não pode ser menor que a quantidade de hóspedes.
+- `ObterQuantidadeHospedes()` retorna o total de hóspedes cadastrados.
+- `CalcularValorDiaria()` retorna `DiasReservados x ValorDiaria`.
+- Desconto de 10% aplicado quando `DiasReservados >= 10`.
+- Validações adicionais de robustez:
+  - Suite obrigatória para cadastrar hóspedes e calcular valor.
+  - `DiasReservados` deve ser maior que zero.
+  - Construtor de `Suite` valida `capacidade > 0` e `valorDiaria > 0`.
+  - `Pessoa.NomeCompleto` evita espaços extras quando `Sobrenome` está vazio/nulo.
 
-![Diagrama de classe estacionamento](diagrama_classe_hotel.png)
+## Estrutura das Classes
+- `Pessoa`: `Nome`, `Sobrenome` e `NomeCompleto` (em maiúsculas, sem espaços extras).
+- `Suite`: `TipoSuite`, `Capacidade`, `ValorDiaria` (com validações de argumentos).
+- `Reserva`: `Hospedes`, `Suite`, `DiasReservados`, métodos `CadastrarHospedes`, `CadastrarSuite`, `ObterQuantidadeHospedes` e `CalcularValorDiaria`.
 
-## Solução
-O código está pela metade, e você deverá dar continuidade obedecendo as regras descritas acima, para que no final, tenhamos um programa funcional. Procure pela palavra comentada "TODO" no código, em seguida, implemente conforme as regras acima.
+## Como Executar
+Pré-requisitos: .NET SDK instalado.
+
+No diretório do projeto, execute:
+```bash
+dotnet run
+```
+Siga as opções do menu no console:
+- `1) Cadastrar suíte`
+- `2) Adicionar hóspedes`
+- `3) Definir dias da reserva`
+- `4) Exibir resumo e calcular valor`
+- `5) Limpar dados`
+- `0) Sair`
+
+## Exemplo de Saída (Resumo)
+```
+Suíte: Premium (capacidade 2)
+Hóspedes (2): HÓSPEDE 1, HÓSPEDE 2
+Dias reservados: 5
+Valor total da estadia: R$ 150,00
+```
+Desconto aplicado quando `DiasReservados >= 10` (ex.: 10 dias, diária R$ 30,00 → total R$ 270,00).
+
+## Erros Comuns Tratados
+- Capacidade da suíte menor que a quantidade de hóspedes.
+- Suite não cadastrada para cadastrar hóspedes ou calcular valor.
+- `DiasReservados` menor ou igual a zero.
+- `valorDiaria` ou `capacidade` inválidos ao criar a suíte.
+- Entradas inválidas no console (novas tentativas até receber valores válidos).
+
+## Arquivos Principais
+- `Models/Pessoa.cs`: modelo de hóspede e formatação de nome completo.
+- `Models/Suite.cs`: modelo de suíte com validação de argumentos.
+- `Models/Reserva.cs`: regras da reserva, validações e cálculo do valor.
+- `Program.cs`: menu interativo, validações de entrada e resumo.
+
+## Próximos Passos (Opcional)
+- Limite de cadastro de hóspedes com base na suíte durante a inclusão.
+- Melhorias nas mensagens e internacionalização.
+- Testes unitários para regras críticas (xUnit/NUnit).
+
